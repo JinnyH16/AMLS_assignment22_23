@@ -9,8 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 
-
-# Resize
+# Resize and load image
 def loadImage(path):
     img = Image.open(path)
     img = cv2.cvtColor(np.asarray(img),cv2.COLOR_RGB2BGR)
@@ -22,6 +21,7 @@ def loadImage(path):
     return data
 
 
+# code for grid search
 '''
 grid = {'C': [0.2, 0.5, 1, 5, 10]}
 search = GridSearchCV(svc, grid,
@@ -59,7 +59,8 @@ def B1_SVM():
         img_path = './Datasets/cartoon_set_test/img/' + name  # get path based on image name
         img = loadImage(img_path)
         x_test.append(img)  # add pic to x_train
-
+        
+    # apply standard scaler
     sc = StandardScaler()
     x_train = sc.fit_transform(x_train)
     x_test = sc.transform(x_test)
