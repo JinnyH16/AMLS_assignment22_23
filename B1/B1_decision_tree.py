@@ -8,8 +8,7 @@ from timeit import default_timer as timer
 from sklearn.preprocessing import StandardScaler
 
 
-
-# Resize
+# Resize and load image
 def loadImage(path):
     img = Image.open(path)
     img = cv2.cvtColor(np.asarray(img),cv2.COLOR_RGB2BGR)
@@ -19,7 +18,6 @@ def loadImage(path):
     data = img.getdata()
     #data = np.array(data).reshape(img.size[1], img.size[0])/100
     return data
-
 
 
 def B1_decisiontree():
@@ -47,7 +45,8 @@ def B1_decisiontree():
         img_path = './Datasets/cartoon_set_test/img/' + name  # get path based on image name
         img = loadImage(img_path)
         x_test.append(img)  # add pic to x_train
-
+    
+    # apply standard scaler
     sc = StandardScaler()
     x_train = sc.fit_transform(x_train)
     x_test = sc.transform(x_test)
