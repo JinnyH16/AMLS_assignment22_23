@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 
 
-
+# resize and load image 
 def loadImage(path):
     img = Image.open(path)
     img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
@@ -20,7 +20,7 @@ def loadImage(path):
     # data = np.array(data).reshape(img.size[1], img.size[0])/100
     return data
 
-
+# code for grid search
 '''
 grid = {'C': [0.2, 0.5, 1, 5, 10], 'kernel': ['linear', 'rbf', 'poly', 'sigmoid']}
 search = GridSearchCV(svc, grid,
