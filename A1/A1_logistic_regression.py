@@ -6,6 +6,8 @@ import numpy as np
 from timeit import default_timer as timer
 from sklearn.preprocessing import StandardScaler
 
+
+# resize and load image to array
 def loadImage(path):
     img = Image.open(path)
     img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
@@ -18,11 +20,13 @@ def loadImage(path):
 
 
 # logistic regression model
+# sigmoid function
 def sigmoid(z):
     sig = 1. / (1. + np.exp(-z))
     return sig
 
 
+# obtain logistic regression parameter
 def logRegParamEstimates(xTrain, yTrain):
     intercept = np.ones((np.array(xTrain).shape[0], 1))
     xTrain = np.concatenate((intercept, xTrain), axis=1)
@@ -37,6 +41,7 @@ def logRegParamEstimates(xTrain, yTrain):
     return theta
 
 
+# fit the model and make prediction
 def logRegrNEWRegrPredict(xTrain, yTrain, xTest):
     theta = logRegParamEstimates(xTrain, yTrain)
     intercept = np.ones((np.array(xTest).shape[0], 1))
@@ -72,6 +77,7 @@ def getMSE(k, y):  # Mean square error
 
 def A1_logisticregression():
     start = timer()
+    
     # Load training data
     dataset = pd.read_csv('./Datasets/celeba/labels.csv', sep="\t")  # read csv file
     dataset.loc[dataset['gender'] == -1, 'gender'] = 0  # convert -1 to 0
@@ -102,9 +108,8 @@ def A1_logisticregression():
     x_test = sc.transform(x_test)
 
     y_pred1 = logRegrNEWRegrPredict(x_train, y_train, x_test)  # train the logistic regression model and test it
-
     k_test = getK(y_pred1)
-    y_pred2 = logRegrNEWRegrPredict(x_train, y_train, x_train)
+    y_pred2 = logRegrNEWRegrPredict(x_train, y_train, x_train)  
     k_train = getK(y_pred2)
 
     end = timer()
