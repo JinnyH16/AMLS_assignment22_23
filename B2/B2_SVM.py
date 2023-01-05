@@ -5,9 +5,11 @@ from sklearn.metrics import accuracy_score
 import cv2
 from timeit import default_timer as timer
 from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
 
 
 def prepare_cartoon_data(images_dir, labels_path, filename_index=3, label_index=1, img_size=50, train=True):  # Remove images with glasses
+    # open image and get labels
     file = open(labels_path, 'r')
     lines = file.readlines()
     image_label = {line.split('\t')[filename_index].rstrip(): int(line.split('\t')[label_index]) for line in
@@ -47,7 +49,7 @@ def prepare_cartoon_data(images_dir, labels_path, filename_index=3, label_index=
         all_imgs.append(img)
         all_labels.append(image_label[img_name])
     total_len = len(all_imgs)
-    all_imgs = np.array(all_imgs).reshape((total_len, -1))
+    all_imgs = np.array(all_imgs).reshape((total_len, -1))  # reshape image
     all_labels = np.array(all_labels)
     return all_imgs, all_labels
 
@@ -56,14 +58,14 @@ def prepare_cartoon_data(images_dir, labels_path, filename_index=3, label_index=
 def B2_SVM():
     x_train, y_train = prepare_cartoon_data('./Datasets/cartoon_set/img/', './Datasets/cartoon_set/labels.csv')
     x_test, y_test = prepare_cartoon_data('./Datasets/cartoon_set_test/img/', './Datasets/cartoon_set_test/labels.csv')
-
+    
+    # apply standard scaler
     sc = StandardScaler()
     x_train = sc.fit_transform(x_train)
     x_test = sc.transform(x_test)
-
-    from sklearn.svm import SVC
-    svc = SVC(kernel='rbf', C=10)
-
+    
+    # implement svm
+    svc = SVC(kernel='rbf', C=10) # these parameters are obtained using grid search
     svc.fit(x_train, y_train)
     y_pred = svc.predict(x_test)
     print("SVM train Accuracy:", accuracy_score(y_train, y_pred=svc.predict(x_train)))
