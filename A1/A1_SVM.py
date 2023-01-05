@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 
-
+# function for loading image (resize and load RGB value to array)
 def loadImage(path):
     img = Image.open(path)
     img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
@@ -38,6 +38,7 @@ print(search.best_params_)
 
 def A1_SVM():
     start = timer()
+    
     # Load training data
     dataset = pd.read_csv('./Datasets/celeba/labels.csv', sep="\t")  # read csv file
     dataset.loc[dataset['gender'] == -1, 'gender'] = 0
@@ -62,16 +63,16 @@ def A1_SVM():
         img_path = './Datasets/celeba_test/img/' + name  # get path based on image name
         img = loadImage(img_path)
         x_test.append(img)  # add pic to x_train
-
+    
+    # apply standard scaler
     sc = StandardScaler()
     x_train = sc.fit_transform(x_train)
     x_test = sc.transform(x_test)
 
     # apply SVM
     svc = SVC(kernel='rbf', C=5)  # these parameters are obtained by grid search
-
-    svc.fit(x_train, y_train)
-    y_pred = svc.predict(x_test)
+    svc.fit(x_train, y_train)  # fit training set to svm model
+    y_pred = svc.predict(x_test)  # apply this model to test set
     print("SVM train Accuracy:", accuracy_score(y_train, y_pred=svc.predict(x_train)))
     print("SVM test Accuracy:", accuracy_score(y_test, y_pred))
 
