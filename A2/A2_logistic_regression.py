@@ -7,7 +7,7 @@ from timeit import default_timer as timer
 from sklearn.preprocessing import StandardScaler
 
 
-
+# resize and load image
 def loadImage(path):
     img = Image.open(path)
     img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
@@ -19,6 +19,8 @@ def loadImage(path):
     return data
 
 
+# logistic regression model
+# sigmoid function
 def sigmoid(z):
     sig = 1. / (1. + np.exp(-z))
     return sig
@@ -35,7 +37,7 @@ def logRegParamEstimates(xTrain, yTrain):
         gradient = np.dot(xTrain.T, (h - yTrain)) / (yTrain.shape[0] * np.log(2))
         theta -= lr * gradient
 
-    return theta
+    return theta  # obtain logistic regression parameter
 
 
 def logRegrNEWRegrPredict(xTrain, yTrain, xTest):
@@ -74,6 +76,7 @@ def getMSE(k,y): # Mean square error
 
 def A2_logisticregression():
     start = timer()
+    
     # Load training data
     dataset = pd.read_csv('./Datasets/celeba/labels.csv', sep="\t")  # read csv file
     dataset.loc[dataset['smiling'] == -1, 'smiling'] = 0
@@ -98,7 +101,8 @@ def A2_logisticregression():
         img_path = './Datasets/celeba_test/img/' + name  # get path based on image name
         img = loadImage(img_path)
         x_test.append(img)  # add pic to x_train
-
+    
+    # apply standard scaler to train and test sets
     sc = StandardScaler()
     x_train = sc.fit_transform(x_train)
     x_test = sc.transform(x_test)
