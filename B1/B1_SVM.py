@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import cv2
 from PIL import Image
 from timeit import default_timer as timer
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
+
 
 
 # Resize and load image
@@ -69,6 +70,9 @@ def B1_SVM():
 
     svc.fit(x_train, y_train)
     y_pred = svc.predict(x_test)
+    
     print("SVM train Accuracy:", accuracy_score(y_train, y_pred=svc.predict(x_train)))
     print("SVM test Accuracy:", accuracy_score(y_test, y_pred=y_pred))
-
+    print('Confusion matrix: ', '\n', confusion_matrix(y_test, y_pred))
+    print('Classification report: ', '\n',
+          classification_report(y_test, y_pred))
