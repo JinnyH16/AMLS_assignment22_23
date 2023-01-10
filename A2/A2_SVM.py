@@ -1,6 +1,6 @@
 import pandas as pd
 import cv2
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from PIL import Image
 import numpy as np
 from timeit import default_timer as timer
@@ -76,3 +76,6 @@ def A2_SVM():
     y_pred = svc.predict(x_test)
     print("SVM train Accuracy:", accuracy_score(y_train, y_pred=svc.predict(x_train)))
     print("SVM test Accuracy:", accuracy_score(y_test, y_pred))
+    print('Confusion matrix: ', '\n', confusion_matrix(y_test, y_pred))
+    print('Classification report: ', '\n',
+          classification_report(y_test, y_pred))
