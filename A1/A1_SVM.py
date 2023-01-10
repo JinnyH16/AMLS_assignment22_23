@@ -1,6 +1,7 @@
 import pandas as pd
 import cv2
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, roc_curve, roc_auc_score
 from PIL import Image
 import numpy as np
 from timeit import default_timer as timer
@@ -73,8 +74,13 @@ def A1_SVM():
     svc = SVC(kernel='rbf', C=5)  # these parameters are obtained by grid search
     svc.fit(x_train, y_train)  # fit training set to svm model
     y_pred = svc.predict(x_test)  # apply this model to test set
-    print("SVM train Accuracy:", accuracy_score(y_train, y_pred=svc.predict(x_train)))
-    print("SVM test Accuracy:", accuracy_score(y_test, y_pred))
-
+    
     end = timer()
     print('Computation time: ', end - start)
+    
+    print("SVM train Accuracy:", accuracy_score(y_train, y_pred=svc.predict(x_train)))
+    print("SVM test Accuracy:", accuracy_score(y_test, y_pred))
+    print('Confusion matrix: ', '\n', confusion_matrix(y_test, y_pred))
+    print('Classification report: ', '\n',
+          classification_report(y_test, y_pred))
+    
