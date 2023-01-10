@@ -2,7 +2,7 @@ import os
 from tqdm import tqdm
 import numpy as np
 from sklearn import tree
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import cv2
 from timeit import default_timer as timer
 from sklearn.preprocessing import StandardScaler
@@ -77,10 +77,15 @@ def B2_decisiontree():
 
     # Predicting labels on the test set.
     y_pred = clf.predict(x_test)
-
+    
+    end = timer()
+    print('Computation cost: ', end - start)
+    
     # Use accuracy metric from sklearn.metrics library
     print('Accuracy Score on train data: ', accuracy_score(y_true=y_train, y_pred=clf.predict(x_train)))
     print('Accuracy Score on test data: ', accuracy_score(y_true=y_test, y_pred=y_pred))
-
-    end = timer()
-    print('Computation cost: ', end - start)
+    print('Confusion matrix: ', '\n', confusion_matrix(y_test, y_pred))
+    print('Classification report: ', '\n',
+          classification_report(y_test, y_pred))
+    
+    
